@@ -28,9 +28,9 @@ def main(args):
                 logging.info(payload)
 
             ec2_conn = boto.ec2.connect_to_region(ec2_region)
-            reservations = ec2_conn.get_all_reservations()
-            instance_ids_by_reservation = [[instance.id for instance in reservation.instances] for reservation in reservations]
-            logging.info("INSTANCES BY RESERVATION --> %s" % str(instance_ids_by_reservation))
+            statae = ec2_conn.get_all_instance_status()
+            states = [(x.id, x.state_name) for x in statae]
+            logging.info("INSTANCE STATES --> %s" % str(states))
             time.sleep(15)
     except NoAuthHandlerFound as e:
         logging.info("CREDS PROBLEM -> %s" % str(e))
