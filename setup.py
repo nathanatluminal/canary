@@ -10,7 +10,7 @@ setup_options = dict(
     author='Nate McCourtney',
     author_email='nathan@luminal.io',
     scripts=['bin/canary'],
-    packages=['canary'],
+    py_modules=['canary'],
     package_dir={'': 'lib'},
     install_requires=requires,
     )

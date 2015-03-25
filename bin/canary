@@ -9,7 +9,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-ip", "--ip-address", help="IP address of meta-data service", default="169.254.169.254")
     parser.add_argument("-r", "--region", help="AWS region to connect to", default='us-east-1')
-    parser.add_argument("-rn", "--role-name", help='Name of the iam role to query the meta-data of')
+    parser.add_argument("-rn", "--role-name", help='Name of the iam role to query the meta-data of', required=True)
     args = parser.parse_args()
     return canary.main(args)
 
