@@ -1,20 +1,17 @@
-#!/usr/bin/env python
 
-from setuptools import setup, find_packages
-
+from distutils.core import setup
 
 requires = ['boto']
 
 setup_options = dict(
     name='canary',
-    version='0.01',
-    description='Universal Command Line Environment for AWS.',
+    version='0.1',
+    description='Canary in the Cloud Coal Mine',
     author='Nate McCourtney',
     author_email='nathan@luminal.io',
     scripts=['bin/canary'],
-    packages=find_packages('.', exclude=['tests*']),
+    packages=['canary'],
     package_dir={'': 'lib'},
-    package_data={'': ['conf/*.json']},
     install_requires=requires,
     )
 
