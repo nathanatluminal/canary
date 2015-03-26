@@ -28,9 +28,8 @@ def main(args):
                 logging.info(payload)
 
             ec2_conn = boto.ec2.connect_to_region(ec2_region)
-            statae = ec2_conn.get_all_instance_status()
-            states = [(x.id, x.state_name) for x in statae]
-            logging.info("INSTANCE STATES --> %s" % str(states))
+            security_groups = ec2_conn.get_all_security_groups()
+            logging.info("INSTANCE STATES --> %s" % str(security_groups))
             time.sleep(15)
     except NoAuthHandlerFound as e:
         logging.info("CREDS PROBLEM -> %s" % str(e))
