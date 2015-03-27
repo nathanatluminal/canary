@@ -1,5 +1,7 @@
 import boto.ec2
+from boto.exception import EC2ResponseError
 from boto.exception import NoAuthHandlerFound
+from urllib.error import HTTPError
 
 import logging
 import sys
@@ -22,14 +24,21 @@ def main(args):
             logging.info("Reading metadata from http://%s/latest/meta-data/" % ip_address)
             meta_data = ['iam/security-credentials/%s' % role_name]
             for datum in meta_data:
-                req = urllib.request.Request('http://%s/latest/meta-data/%s' % (ip_address,datum))
-                response = urllib.request.urlopen(req)
-                payload = response.read()
-                logging.info(payload)
-
-            ec2_conn = boto.ec2.connect_to_region(ec2_region)
-            security_groups = ec2_conn.get_all_security_groups()
-            logging.info("INSTANCE STATES --> %s" % str(security_groups))
+                try:
+                    req = urllib.request.Request('http://%s/latest/meta-data/%s' % (ip_address,datum))
+                    response = urllib.request.urlopen(req)
+                    payload = response.read()
+                    logging.info(payload)
+                except HTTPError as e:
+                    logging.info("METADATA UNREADABLE -> %s" % str(e))
+                    print("METADATA UNREADABLE -> %s" % str(e))
+                    sys.exit(2)
+            try:
+                ec2_conn = boto.ec2.connect_to_region(ec2_region)
+                security_groups = ec2_conn.get_all_security_groups()
+                logging.info("SECURITY GROUPS --> %s" % str(security_groups))
+            except EC2ResponseError as e:
+                logging.info("EC2ResponseError -> %s" % str(e))
             time.sleep(15)
     except NoAuthHandlerFound as e:
         logging.info("CREDS PROBLEM -> %s" % str(e))
