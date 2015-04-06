@@ -58,6 +58,7 @@ def main(args):
                 logging.info("SECURITY GROUPS --> %s" % str(security_groups))
             except EC2ResponseError as e:
                 if (send_to_sns == True) and (msg_sent == False):
+                    logging.info("SNS Alert pushed to topic")
                     sns_conn.publish('arn:aws:sns:us-west-2:690302563878:canary', str(e), "Canary EC2 Error")
                 msg_sent = True
                 logging.info("EC2ResponseError -> %s" % str(e))
