@@ -4,3 +4,4 @@ dist
 MANIFEST
 *egg*
 .idea
+.DS_Store
